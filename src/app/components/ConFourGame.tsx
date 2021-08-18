@@ -17,10 +17,9 @@ function ConFourGame(): JSX.Element {
     const currentStep = currentHistory[currentHistory.length - 1];
     const squares = [...currentStep.squares];
 
-    console.log(i);
-    // if (i > 6) {
-    //   if (!squares[i - 7]) return;
-    // }
+    if (i > 6) {
+      if (!squares[i - 7]) return;
+    }
 
     if (calculateWinner(squares) || squares[i]) {
       return;
@@ -105,7 +104,7 @@ function calculateWinner(squares: string[]) {
     [36, 37, 38, 39],
     [37, 38, 39, 40],
     [38, 39, 40, 41],
-    // Diagonals
+    // Diagonals left to right
     [3, 11, 19, 27],
     [2, 10, 18, 26],
     [10, 18, 26, 34],
@@ -117,6 +116,19 @@ function calculateWinner(squares: string[]) {
     [16, 24, 32, 40],
     [7, 15, 23, 31],
     [14, 22, 30, 38],
+    // Diagonals right to left
+    [3, 9, 15, 21],
+    [4, 10, 16, 22],
+    [10, 16, 22, 28],
+    [5, 11, 17, 23],
+    [11, 17, 23, 29],
+    [17, 23, 29, 35],
+    [6, 12, 18, 24],
+    [12, 18, 24, 30],
+    [18, 24, 30, 36],
+    [13, 19, 25, 31],
+    [19, 25, 31, 37],
+    [20, 26, 32, 38],
     // 1st line vertical
     [0, 7, 14, 21],
     [7, 14, 21, 28],
