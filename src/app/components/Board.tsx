@@ -1,12 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Square from './Square';
 
 function Board(): JSX.Element {
-  function renderSquare(i: number) {
-    return <Square />;
+  const [squares, setSquares] = useState<string[]>(Array(9).fill(null));
+  const [xIsNext, setXIsNext] = useState<boolean>(true);
+
+  function handleClick(i: number) {
+    // If calculateWinner finds a winner or squares[i] has already an entry do not do anything onClick
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+    const newSquares = [...squares];
+    newSquares[i] = xIsNext ? 'X' : 'O';
+    setSquares(newSquares);
+    setXIsNext(!xIsNext);
   }
 
-  const status = 'Next player: X';
+  function renderSquare(i: number) {
+    return <Square value={squares[i]} onClick={() => handleClick(i)} />;
+  }
+
+  const winner = calculateWinner(squares);
+  let status;
+  if (winner) {
+    status = 'Winner: ' + winner;
+  } else {
+    status = 'Next player: ' + (xIsNext ? 'X' : 'O');
+  }
 
   return (
     <div>
@@ -31,3 +51,26 @@ function Board(): JSX.Element {
 }
 
 export default Board;
+
+function calculateWinner(squares: string[]) {
+  const lines = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6],
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    // if (squares[a] && (squares[a] === squares[b]) && (squares[a] === squares[c])) {
+    //   return squares[a];
+    // }
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
